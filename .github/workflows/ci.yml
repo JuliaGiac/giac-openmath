@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  table:
+    name: Table
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: julia-actions/setup-julia@v3
+        with:
+          version: '1'
+      - uses: julia-actions/cache@v3
+      - name: Test the table
+        run: julia --project=test -e 'using Pkg; Pkg.instantiate(); include("test/runtests.jl")'
+
+  giac:
+    name: Against GIAC (Giac.jl main)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: julia-actions/setup-julia@v3
+        with:
+          version: '1'
+      - uses: julia-actions/cache@v3
+      - name: Test against GIAC
+        run: julia --project=test/giac -e 'using Pkg; Pkg.add(url="https://github.com/JuliaGiac/Giac.jl"); Pkg.instantiate(); include("test/giac/runtests.jl")'
