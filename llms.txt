@@ -1,0 +1,14 @@
+# giac-openmath
+
+> A data table mapping the nodes of GIAC's expression trees (the Giac computer algebra system, its C++ library) to OpenMath Content Dictionary symbols and back, with refused false friends. No code: giac-openmath.toml, and the same data as giac-openmath.json.
+
+## Docs
+
+- [README](README.md): what is mapped, what is refused, how to use the table
+- [Format](docs/format.md): leaves, maps, patterns (placeholders, apply, bind), directions, status, refused entries, GIAC input forms
+- [Changelog](CHANGELOG.md)
+
+## Data
+
+- [giac-openmath.toml](giac-openmath.toml): the source
+- [giac-openmath.json](giac-openmath.json): generated from the TOML (just export)

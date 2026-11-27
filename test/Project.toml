@@ -1,0 +1,9 @@
+[deps]
+Downloads = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
+SHA = "ea8e919c-243c-51af-8825-aaa63cd721ce"
+TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
+TestItemRunner = "f8b46487-2199-4994-9208-9a1283c18c0a"
+
+[compat]
+TestItemRunner = "1"
+julia = "1.10"
