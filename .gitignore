@@ -1,0 +1,31 @@
+# =============================================================================
+# Gitallow approach: deny everything, then explicitly allow tracked content
+# =============================================================================
+
+# Deny all by default
+*
+
+# Top-level files
+!.gitignore
+!CHANGELOG.md
+!LICENSE
+!README.md
+!giac-openmath.json
+!giac-openmath.toml
+!justfile
+!llms.txt
+
+# Directories (allow the directory, then its contents)
+!.github/
+!.github/**
+!docs/
+!docs/**
+!scripts/
+!scripts/**
+!test/
+!test/**
+
+# Test environments: manifests are local, the CD files a download cache
+test/Manifest.toml
+test/giac/Manifest.toml
+test/.cd-cache/
