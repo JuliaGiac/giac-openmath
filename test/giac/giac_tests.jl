@@ -77,3 +77,20 @@ end
         @test node(r["example"]) == r["giac"]
     end
 end
+
+@testitem "each accepted case of the corpus: its GIAC source has its value" tags = [:giac] setup = [GiacTable] begin
+    using JSON
+    corpus = JSON.parsefile(joinpath(@__DIR__, "..", "fixtures", "openmath-to-giac.json"))
+    # the same value: their difference simplifies to 0, or, for relations and
+    # booleans, they print the same
+    function same(a, b)
+        x, y = giac_eval(a), giac_eval(b)
+        string(x) == string(y) && return true
+        d = try string(Giac.Commands.simplify(x - y)) catch; "" end
+        return d in ("0", "0.0")
+    end
+    for c in corpus["cases"]
+        haskey(c, "value") || continue
+        @test same(c["giac_source"], c["value"])
+    end
+end

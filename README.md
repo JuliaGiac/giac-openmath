@@ -45,6 +45,13 @@ with the same arguments (`status = "names"`). It does not say that their
 domains, branch cuts and conventions agree; the notes record what is known to
 differ (GIAC evaluates `trunc(x)` to `floor(x)`, `acot(x)` to `atan(1/x)`…).
 
+## A shared corpus
+
+`test/fixtures/openmath-to-giac.json` holds cases of OpenMath read into GIAC, with
+the value GIAC must give or the refusal expected (`docs/fixtures.md`). Readers
+(giac-wasm, Giac.jl) and producers (such as `mathjson-openmath`) test against
+it, so that they agree.
+
 ## Tests
 
 ```bash

@@ -1,8 +1,10 @@
 [deps]
 Giac = "e4421f97-9838-4fd0-9fa5-94f11373bf78"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 TestItemRunner = "f8b46487-2199-4994-9208-9a1283c18c0a"
 
 [compat]
+JSON = "1"
 TestItemRunner = "1"
 julia = "1.10"
