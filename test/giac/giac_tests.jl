@@ -94,3 +94,12 @@ end
         @test same(c["giac_source"], c["value"])
     end
 end
+
+@testitem "each procedure is a GIAC command, read as its node" tags = [:giac] setup = [GiacTable] begin
+    for p in get(table, "procedure", Any[])
+        @test node(sample(p["giac"], "call")) == p["giac"][1]
+    end
+    for o in get(table, "procedure_option", Any[])
+        @test Giac.is_valid_command(o["giac"]) || o["giac"] == "timeout"
+    end
+end

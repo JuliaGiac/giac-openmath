@@ -1,0 +1,218 @@
+<CD xmlns="http://www.openmath.org/OpenMathCD">
+
+<CDComment>
+A private Content Dictionary of JuliaGiac (https://github.com/JuliaGiac/giac-openmath),
+distributed under the MIT license (see LICENSE in that repository). It is not
+an OpenMath Society Content Dictionary, and not derived from one.
+</CDComment>
+
+<CDName>giac_procedures1</CDName>
+<CDBase>https://juliagiac.github.io/giac-openmath/cd</CDBase>
+<CDURL>https://juliagiac.github.io/giac-openmath/cd/giac_procedures1.ocd</CDURL>
+<CDReviewDate>2027-11-28</CDReviewDate>
+<CDStatus>private</CDStatus>
+<CDDate>2026-11-28</CDDate>
+<CDVersion>0</CDVersion>
+<CDRevision>1</CDRevision>
+
+<Description>
+Requests to the GIAC computer algebra system (https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac.html),
+to be made with scscp1.procedure_call, as an SCSCP service's procedures are.
+The symbols of this CD name requests, not mathematical objects: what GIAC
+answers depends on its version and settings. They belong in a procedure_call
+only; a result, a claim or evidence is written in official symbols, with its
+relation to the request explicit (equal under the premises, the solutions of,
+an approximation of). Readers refuse these symbols elsewhere, and refuse this
+CD unless their caller enables it.
+</Description>
+
+<CDDefinition>
+<Name>simplify</Name>
+<Role>application</Role>
+<Description>
+A request to GIAC's simplify command, simplify(e): GIAC returns a form of e GIAC considers simpler; its value equals e under the premises of the call.
+This symbol names a request, not a mathematical function: the answer depends on
+the GIAC version and the settings of the service. It may appear only as the
+head of the argument of scscp1.procedure_call, never in a result, a claim or
+evidence; a reader refuses it anywhere else. The arguments (e) are
+OpenMath objects in official symbols. The premises and the complex mode of the
+call are given by the attributions giac_procedures1.premises and
+giac_procedures1.complex_mode on that argument.
+</Description>
+<Example>
+<OMOBJ xmlns="http://www.openmath.org/OpenMath" version="2.0" cdbase="http://www.openmath.org/cd">
+  <OMA>
+    <OMS cd="scscp1" name="procedure_call"/>
+    <OMA>
+      <OMS cdbase="https://juliagiac.github.io/giac-openmath/cd" cd="giac_procedures1" name="simplify"/>
+      <OMV name="x"/>
+    </OMA>
+  </OMA>
+</OMOBJ>
+</Example>
+</CDDefinition>
+<CDDefinition>
+<Name>expand</Name>
+<Role>application</Role>
+<Description>
+A request to GIAC's expand command, expand(e): GIAC returns e with products and powers expanded; its value equals e.
+This symbol names a request, not a mathematical function: the answer depends on
+the GIAC version and the settings of the service. It may appear only as the
+head of the argument of scscp1.procedure_call, never in a result, a claim or
+evidence; a reader refuses it anywhere else. The arguments (e) are
+OpenMath objects in official symbols. The premises and the complex mode of the
+call are given by the attributions giac_procedures1.premises and
+giac_procedures1.complex_mode on that argument.
+</Description>
+<Example>
+<OMOBJ xmlns="http://www.openmath.org/OpenMath" version="2.0" cdbase="http://www.openmath.org/cd">
+  <OMA>
+    <OMS cd="scscp1" name="procedure_call"/>
+    <OMA>
+      <OMS cdbase="https://juliagiac.github.io/giac-openmath/cd" cd="giac_procedures1" name="expand"/>
+      <OMV name="x"/>
+    </OMA>
+  </OMA>
+</OMOBJ>
+</Example>
+</CDDefinition>
+<CDDefinition>
+<Name>factor</Name>
+<Role>application</Role>
+<Description>
+A request to GIAC's factor command, factor(e): GIAC returns e factored (over the rationals, or over the field the premises allow); its value equals e.
+This symbol names a request, not a mathematical function: the answer depends on
+the GIAC version and the settings of the service. It may appear only as the
+head of the argument of scscp1.procedure_call, never in a result, a claim or
+evidence; a reader refuses it anywhere else. The arguments (e) are
+OpenMath objects in official symbols. The premises and the complex mode of the
+call are given by the attributions giac_procedures1.premises and
+giac_procedures1.complex_mode on that argument.
+</Description>
+<Example>
+<OMOBJ xmlns="http://www.openmath.org/OpenMath" version="2.0" cdbase="http://www.openmath.org/cd">
+  <OMA>
+    <OMS cd="scscp1" name="procedure_call"/>
+    <OMA>
+      <OMS cdbase="https://juliagiac.github.io/giac-openmath/cd" cd="giac_procedures1" name="factor"/>
+      <OMV name="x"/>
+    </OMA>
+  </OMA>
+</OMOBJ>
+</Example>
+</CDDefinition>
+<CDDefinition>
+<Name>solve</Name>
+<Role>application</Role>
+<Description>
+A request to GIAC's solve command, solve(r, v): GIAC returns the solutions in the variable v of the relation r (or of a list of relations), as GIAC returns them: a list of values, or of relations for several variables.
+This symbol names a request, not a mathematical function: the answer depends on
+the GIAC version and the settings of the service. It may appear only as the
+head of the argument of scscp1.procedure_call, never in a result, a claim or
+evidence; a reader refuses it anywhere else. The arguments (r, v) are
+OpenMath objects in official symbols. The premises and the complex mode of the
+call are given by the attributions giac_procedures1.premises and
+giac_procedures1.complex_mode on that argument.
+</Description>
+<Example>
+<OMOBJ xmlns="http://www.openmath.org/OpenMath" version="2.0" cdbase="http://www.openmath.org/cd">
+  <OMA>
+    <OMS cd="scscp1" name="procedure_call"/>
+    <OMA>
+      <OMS cdbase="https://juliagiac.github.io/giac-openmath/cd" cd="giac_procedures1" name="solve"/>
+      <OMV name="x"/>
+    </OMA>
+  </OMA>
+</OMOBJ>
+</Example>
+</CDDefinition>
+<CDDefinition>
+<Name>evalf</Name>
+<Role>application</Role>
+<Description>
+A request to GIAC's evalf command, evalf(e) or evalf(e, d): GIAC returns a floating-point approximation of e, with d significant digits if given; an approximation, never an equality.
+This symbol names a request, not a mathematical function: the answer depends on
+the GIAC version and the settings of the service. It may appear only as the
+head of the argument of scscp1.procedure_call, never in a result, a claim or
+evidence; a reader refuses it anywhere else. The arguments (e, d) are
+OpenMath objects in official symbols. The premises and the complex mode of the
+call are given by the attributions giac_procedures1.premises and
+giac_procedures1.complex_mode on that argument.
+</Description>
+<Example>
+<OMOBJ xmlns="http://www.openmath.org/OpenMath" version="2.0" cdbase="http://www.openmath.org/cd">
+  <OMA>
+    <OMS cd="scscp1" name="procedure_call"/>
+    <OMA>
+      <OMS cdbase="https://juliagiac.github.io/giac-openmath/cd" cd="giac_procedures1" name="evalf"/>
+      <OMV name="x"/>
+    </OMA>
+  </OMA>
+</OMOBJ>
+</Example>
+</CDDefinition>
+<CDDefinition>
+<Name>series</Name>
+<Role>application</Role>
+<Description>
+A request to GIAC's series command, series(e, v, a, n): GIAC returns the series expansion of e in v at a, to order n, as GIAC returns it (with its order term).
+This symbol names a request, not a mathematical function: the answer depends on
+the GIAC version and the settings of the service. It may appear only as the
+head of the argument of scscp1.procedure_call, never in a result, a claim or
+evidence; a reader refuses it anywhere else. The arguments (e, v, a, n) are
+OpenMath objects in official symbols. The premises and the complex mode of the
+call are given by the attributions giac_procedures1.premises and
+giac_procedures1.complex_mode on that argument.
+</Description>
+<Example>
+<OMOBJ xmlns="http://www.openmath.org/OpenMath" version="2.0" cdbase="http://www.openmath.org/cd">
+  <OMA>
+    <OMS cd="scscp1" name="procedure_call"/>
+    <OMA>
+      <OMS cdbase="https://juliagiac.github.io/giac-openmath/cd" cd="giac_procedures1" name="series"/>
+      <OMV name="x"/>
+    </OMA>
+  </OMA>
+</OMOBJ>
+</Example>
+</CDDefinition>
+<CDDefinition>
+<Name>desolve</Name>
+<Role>application</Role>
+<Description>
+A request to GIAC's desolve command, desolve(r, y): GIAC returns the solutions of the differential equation r for the unknown function y, as GIAC returns them.
+This symbol names a request, not a mathematical function: the answer depends on
+the GIAC version and the settings of the service. It may appear only as the
+head of the argument of scscp1.procedure_call, never in a result, a claim or
+evidence; a reader refuses it anywhere else. The arguments (r, y) are
+OpenMath objects in official symbols. The premises and the complex mode of the
+call are given by the attributions giac_procedures1.premises and
+giac_procedures1.complex_mode on that argument.
+</Description>
+<Example>
+<OMOBJ xmlns="http://www.openmath.org/OpenMath" version="2.0" cdbase="http://www.openmath.org/cd">
+  <OMA>
+    <OMS cd="scscp1" name="procedure_call"/>
+    <OMA>
+      <OMS cdbase="https://juliagiac.github.io/giac-openmath/cd" cd="giac_procedures1" name="desolve"/>
+      <OMV name="x"/>
+    </OMA>
+  </OMA>
+</OMOBJ>
+</Example>
+</CDDefinition>
+<CDDefinition>
+<Name>premises</Name>
+<Role>attribution</Role>
+<Description>
+The assumptions GIAC makes during the call (GIAC's assume), as a boolean OpenMath object in official symbols: a relation, or logic1.and of relations, about the variables of the call (for example relation1.gt(x, 0)). The answer of the call holds under them.
+</Description>
+</CDDefinition>
+<CDDefinition>
+<Name>complex_mode</Name>
+<Role>attribution</Role>
+<Description>
+Whether GIAC computes over the complex numbers during the call (GIAC's complex_mode): logic1.true or logic1.false. Without it, the service's setting applies, and the answer should say which.
+</Description>
+</CDDefinition>
+</CD>

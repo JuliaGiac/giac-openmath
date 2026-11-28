@@ -5,6 +5,7 @@
 ## Docs
 
 - [README](README.md): what is mapped, what is refused, how to use the table
+- [Private CDs](docs/private-cds.md): giac_math1 and giac_procedures1, requests to GIAC inside scscp1.procedure_call, the rules for readers
 - [Corpus](docs/fixtures.md): the shared test cases of OpenMath read into GIAC (test/fixtures/openmath-to-giac.json)
 - [Format](docs/format.md): leaves, maps, patterns (placeholders, apply, bind), directions, status, refused entries, GIAC input forms
 - [Changelog](CHANGELOG.md)

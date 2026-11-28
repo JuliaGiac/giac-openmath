@@ -9,7 +9,23 @@ structure.
 
 ## [Unreleased]
 
+### Changed
+- **Format 2** (format 1 readers keep working on the official part, but should
+  move): each CD gives the `status` its file declares (`scscp1`, in
+  OpenMath's Official directory, declares `experimental`).
+
 ### Added
+- **Private CDs of JuliaGiac**, in `docs/cd/`, with their own base
+  `https://juliagiac.github.io/giac-openmath/cd`, pinned by SHA-256:
+  `giac_math1` (`sign`, defined by formal properties) and `giac_procedures1`
+  (requests to GIAC: simplify, expand, factor, solve, evalf, series,
+  desolve; options premises and complex_mode).
+- **Requests to GIAC** (`[[procedure]]`, `[envelope]`,
+  `[[procedure_option]]`): written in an `scscp1.procedure_call`, answered by
+  `procedure_completed` or `procedure_terminated`; procedure symbols are
+  refused anywhere else and in results. The rules, agreed with the
+  MathInterchange study, are in `docs/private-cds.md`.
+- `sign` ↔ `giac_math1.sign`.
 - `test/fixtures/openmath-to-giac.json`: 52 cases of OpenMath (OpenMath 2.0 JSON
   encoding) read into GIAC, for every reader and producer to test against.
   Each accepted case gives a GIAC source and the value GIAC must give; each
