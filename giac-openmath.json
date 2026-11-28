@@ -31,7 +31,7 @@
       "cdbase": "https://juliagiac.github.io/giac-openmath/cd",
       "local": true,
       "path": "docs/cd/giac_procedures1.ocd",
-      "sha256": "2b3ee00ea74d16ba52b339f2769d19cf53c11a15f2acc44858395cbc5fb95f6e",
+      "sha256": "f3342a7b4303dffc40c28069bb0d6b5ba9d50b0c1c241ecf8d46258fc4d441d4",
       "status": "private"
     },
     "integer1": {
@@ -519,7 +519,7 @@
     },
     {
       "giac": ["series", "#1", "#2", "#3", "#4"],
-      "note": "series(e, v, a, n): the expansion of e in v at a to order n, with GIAC's order term.",
+      "note": "series(e, v, a, n): the part of the expansion of e in v at a before GIAC's order term (negative or fractional powers possible; no order term when exact).",
       "om": ["giac_procedures1.series", "#1", "#2", "#3", "#4"]
     },
     {
@@ -541,7 +541,7 @@
     },
     {
       "giac": "complex_mode",
-      "note": "A semantic attribution on the call's argument: logic1.true or logic1.false, GIAC's complex_mode for the call (it sets factor's field; it does not declare variables real).",
+      "note": "A semantic attribution on the call's argument: logic1.true or logic1.false, GIAC's complex_mode for the call (it changes which factors factor finds; it does not declare variables real).",
       "om": "giac_procedures1.complex_mode"
     },
     {

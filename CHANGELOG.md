@@ -19,7 +19,9 @@ structure.
   `https://juliagiac.github.io/giac-openmath/cd`, pinned by SHA-256:
   `giac_math1` (`sign`, defined by formal properties) and `giac_procedures1`
   (requests to GIAC: simplify, expand, factor, solve, evalf, series,
-  desolve, each with the relation its result holds where defined; options
+  desolve, each with the relation a result is checked against: defined and
+  equal wherever the request's expression is defined; no field stated for
+  factor; series results may hold negative or fractional powers; options
   premises and complex_mode, as semantic attributions).
 - **Requests to GIAC** (`[[procedure]]`, `[envelope]`,
   `[[procedure_option]]`): written in an `scscp1.procedure_call`, answered by

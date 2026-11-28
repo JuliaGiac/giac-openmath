@@ -32,7 +32,7 @@ CD unless their caller enables it.
 <Name>simplify</Name>
 <Role>application</Role>
 <Description>
-A request to GIAC's simplify command, simplify(e). GIAC returns a form of e GIAC considers simpler. GIAC intends a form equal to e wherever e is defined under the premises of the call. This is not guaranteed (GIAC may cancel a factor without saying that e is undefined where it vanished): it is the relation a result is checked against, equality where defined.
+A request to GIAC's simplify command, simplify(e). GIAC returns a form of e GIAC considers simpler. GIAC intends a result defined and equal to e wherever e is defined under the premises of the call; the result may be defined at more points (x + 1 for (x^2 - 1)/(x - 1), at 1). This is not guaranteed: it is the relation a result is checked against.
 This symbol names a request, not a mathematical function: the answer depends on
 the GIAC version and on the settings of the service. It may appear only as the
 head of the argument of scscp1.procedure_call, never in a result, a claim or
@@ -54,7 +54,7 @@ giac_procedures1.complex_mode on that argument.
 <Name>expand</Name>
 <Role>application</Role>
 <Description>
-A request to GIAC's expand command, expand(e). GIAC returns e with its products and powers expanded. GIAC intends a form equal to e wherever e is defined under the premises of the call. This is not guaranteed (GIAC may cancel a factor without saying that e is undefined where it vanished): it is the relation a result is checked against, equality where defined.
+A request to GIAC's expand command, expand(e). GIAC returns e with its products and powers expanded. GIAC intends a result defined and equal to e wherever e is defined under the premises of the call; the result may be defined at more points (x + 1 for (x^2 - 1)/(x - 1), at 1). This is not guaranteed: it is the relation a result is checked against.
 This symbol names a request, not a mathematical function: the answer depends on
 the GIAC version and on the settings of the service. It may appear only as the
 head of the argument of scscp1.procedure_call, never in a result, a claim or
@@ -76,7 +76,7 @@ giac_procedures1.complex_mode on that argument.
 <Name>factor</Name>
 <Role>application</Role>
 <Description>
-A request to GIAC's factor command, factor(e). GIAC returns e factored. The coefficient field is the rationals, or the complex numbers when the call's complex_mode is true; the premises play no part in it. GIAC intends a form equal to e wherever e is defined under the premises of the call. This is not guaranteed (GIAC may cancel a factor without saying that e is undefined where it vanished): it is the relation a result is checked against, equality where defined.
+A request to GIAC's factor command, factor(e). GIAC returns e factored. GIAC chooses the coefficients of the factors, and this CD does not state a field: they may contain square roots (x^2 - 2 gives (x - sqrt(2))*(x + sqrt(2))), and i when the call's complex_mode is true (x^2 + 2 splits, x^3 - 2 does not). GIAC intends a result defined and equal to e wherever e is defined under the premises of the call; the result may be defined at more points (x + 1 for (x^2 - 1)/(x - 1), at 1). This is not guaranteed: it is the relation a result is checked against.
 This symbol names a request, not a mathematical function: the answer depends on
 the GIAC version and on the settings of the service. It may appear only as the
 head of the argument of scscp1.procedure_call, never in a result, a claim or
@@ -142,7 +142,7 @@ giac_procedures1.complex_mode on that argument.
 <Name>series</Name>
 <Role>application</Role>
 <Description>
-A request to GIAC's series command, series(e, v, a, n). GIAC returns the series expansion of e in v at a, with its terms up to (v - a)^n, followed by GIAC's order term for the rest. No official symbol writes the order term: a result is the polynomial part, and the relation is that it agrees with e to order n at a, the difference being O((v - a)^(n+1)).
+A request to GIAC's series command, series(e, v, a, n). GIAC returns the series expansion of e in v at a to order n, followed by GIAC's order term for the rest. No official symbol writes the order term: a result is the part before it, which may contain negative or fractional powers of v - a (1/x + x, sqrt(x)), with no order term when the expansion is exact. The relation is that it agrees with e to order n at a, the difference being O((v - a)^(n+1)).
 This symbol names a request, not a mathematical function: the answer depends on
 the GIAC version and on the settings of the service. It may appear only as the
 head of the argument of scscp1.procedure_call, never in a result, a claim or
@@ -164,7 +164,7 @@ giac_procedures1.complex_mode on that argument.
 <Name>desolve</Name>
 <Role>application</Role>
 <Description>
-A request to GIAC's desolve command, desolve(r, y). GIAC returns the solutions of the differential equation r for the unknown function y, as GIAC returns them. They introduce new constants (GIAC names them c_0, c_1, ...): a result's constants are new names, bound by the result (each value of them giving a solution), which a reader must not take for names of the request.
+A request to GIAC's desolve command, desolve(r, y). GIAC returns the solutions of the differential equation r for the unknown function y, as GIAC returns them. They introduce new constants (GIAC names them c_0, c_1, ...): a result's constants are new names, bound by the result, which a reader must not take for names of the request. GIAC intends each value of them to give a solution; this is not guaranteed, and the result is not implied to be the general solution.
 This symbol names a request, not a mathematical function: the answer depends on
 the GIAC version and on the settings of the service. It may appear only as the
 head of the argument of scscp1.procedure_call, never in a result, a claim or
@@ -186,7 +186,7 @@ giac_procedures1.complex_mode on that argument.
 <Name>premises</Name>
 <Role>semantic-attribution</Role>
 <Description>
-The assumptions GIAC makes during the call (GIAC's assume, for the call only), as a boolean OpenMath object in official symbols: a relation, logic1.and or logic1.or of relations, or set1.in(x, setname1.R) to declare a variable real. The answer of the call holds under them. A semantic attribution: it changes the meaning of the request, and a reader that does not understand it refuses the call rather than drop it.
+The assumptions GIAC makes during the call (GIAC's assume, for the call only), as a boolean OpenMath object in official symbols: a relation, logic1.and or logic1.or of relations, or set1.in(x, setname1.R) to declare a variable real. GIAC computes under them, and a result is checked under them. A semantic attribution: it changes the meaning of the request, and a reader that does not understand it refuses the call rather than drop it.
 </Description>
 <Example>
 A complete request, SCSCP-style: scscp1's call_id, option_return_object and
@@ -220,7 +220,7 @@ mathematical question.
 <Name>complex_mode</Name>
 <Role>semantic-attribution</Role>
 <Description>
-Whether GIAC computes over the complex numbers during the call (GIAC's complex_mode): logic1.true or logic1.false. It sets, for instance, the coefficient field of factor. It does not declare variables real or complex: premises do (set1.in(x, setname1.R)). A semantic attribution, like premises.
+Whether GIAC computes over the complex numbers during the call (GIAC's complex_mode): logic1.true or logic1.false. It changes, for instance, which factors factor finds (with i or without). It does not declare variables real or complex: premises do (set1.in(x, setname1.R)). A semantic attribution, like premises.
 </Description>
 </CDDefinition>
 </CD>
