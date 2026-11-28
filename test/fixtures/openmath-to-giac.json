@@ -1404,6 +1404,232 @@
     "path": [],
     "kind": "OMSTR"
    }
+  },
+  {
+   "name": "a private CD is refused unless enabled",
+   "om": {
+    "kind": "OMA",
+    "applicant": {
+     "kind": "OMS",
+     "cd": "giac_math1",
+     "name": "sign",
+     "cdbase": "https://juliagiac.github.io/giac-openmath/cd"
+    },
+    "arguments": [
+     {
+      "kind": "OMV",
+      "name": "x"
+     }
+    ]
+   },
+   "refused": {
+    "path": [
+     "applicant"
+    ],
+    "symbol": "giac_math1.sign",
+    "reason_contains": "private"
+   },
+   "note": "Format 2: a reader uses only official CDs unless its caller enables others."
+  },
+  {
+   "name": "a private CD, enabled",
+   "om": {
+    "kind": "OMA",
+    "applicant": {
+     "kind": "OMS",
+     "cd": "giac_math1",
+     "name": "sign",
+     "cdbase": "https://juliagiac.github.io/giac-openmath/cd"
+    },
+    "arguments": [
+     {
+      "kind": "OMV",
+      "name": "x"
+     }
+    ]
+   },
+   "options": {
+    "enable": [
+     "giac_math1"
+    ]
+   },
+   "giac_source": "sign(x)",
+   "value": "sign(x)"
+  },
+  {
+   "name": "a cdbase is inherited from the enclosing object",
+   "om": {
+    "kind": "OMA",
+    "cdbase": "https://juliagiac.github.io/giac-openmath/cd",
+    "applicant": {
+     "kind": "OMS",
+     "cd": "giac_math1",
+     "name": "sign"
+    },
+    "arguments": [
+     {
+      "kind": "OMV",
+      "name": "x"
+     }
+    ]
+   },
+   "options": {
+    "enable": [
+     "giac_math1"
+    ]
+   },
+   "giac_source": "sign(x)",
+   "value": "sign(x)",
+   "note": "The OMS has no cdbase of its own: it takes its application's."
+  },
+  {
+   "name": "a private CD's symbol at OpenMath's base is refused",
+   "om": {
+    "kind": "OMA",
+    "applicant": {
+     "kind": "OMS",
+     "cd": "giac_math1",
+     "name": "sign"
+    },
+    "arguments": [
+     {
+      "kind": "OMV",
+      "name": "x"
+     }
+    ]
+   },
+   "options": {
+    "enable": [
+     "giac_math1"
+    ]
+   },
+   "refused": {
+    "path": [
+     "applicant"
+    ],
+    "symbol": "giac_math1.sign",
+    "reason_contains": "base"
+   },
+   "note": "giac_math1 at http://www.openmath.org/cd is another dictionary than JuliaGiac's."
+  },
+  {
+   "name": "an official symbol at another base is refused",
+   "om": {
+    "kind": "OMA",
+    "applicant": {
+     "kind": "OMS",
+     "cd": "transc1",
+     "name": "ln",
+     "cdbase": "http://example.org/cd"
+    },
+    "arguments": [
+     {
+      "kind": "OMV",
+      "name": "x"
+     }
+    ]
+   },
+   "refused": {
+    "path": [
+     "applicant"
+    ],
+    "symbol": "transc1.ln",
+    "reason_contains": "base"
+   }
+  },
+  {
+   "name": "an experimental CD is refused unless enabled",
+   "om": {
+    "kind": "OMA",
+    "applicant": {
+     "kind": "OMS",
+     "cd": "scscp1",
+     "name": "procedure_call"
+    },
+    "arguments": [
+     {
+      "kind": "OMA",
+      "applicant": {
+       "kind": "OMS",
+       "cd": "giac_procedures1",
+       "name": "factor",
+       "cdbase": "https://juliagiac.github.io/giac-openmath/cd"
+      },
+      "arguments": [
+       {
+        "kind": "OMV",
+        "name": "x"
+       }
+      ]
+     }
+    ]
+   },
+   "refused": {
+    "path": [
+     "applicant"
+    ],
+    "symbol": "scscp1.procedure_call",
+    "reason_contains": "experimental"
+   }
+  },
+  {
+   "name": "a request outside the envelope is refused",
+   "om": {
+    "kind": "OMA",
+    "applicant": {
+     "kind": "OMS",
+     "cd": "giac_procedures1",
+     "name": "factor",
+     "cdbase": "https://juliagiac.github.io/giac-openmath/cd"
+    },
+    "arguments": [
+     {
+      "kind": "OMA",
+      "applicant": {
+       "kind": "OMS",
+       "cd": "arith1",
+       "name": "minus"
+      },
+      "arguments": [
+       {
+        "kind": "OMA",
+        "applicant": {
+         "kind": "OMS",
+         "cd": "arith1",
+         "name": "power"
+        },
+        "arguments": [
+         {
+          "kind": "OMV",
+          "name": "x"
+         },
+         {
+          "kind": "OMI",
+          "integer": 2
+         }
+        ]
+       },
+       {
+        "kind": "OMI",
+        "integer": 1
+       }
+      ]
+     }
+    ]
+   },
+   "options": {
+    "enable": [
+     "giac_procedures1"
+    ]
+   },
+   "refused": {
+    "path": [
+     "applicant"
+    ],
+    "symbol": "giac_procedures1.factor",
+    "reason_contains": "procedure_call"
+   },
+   "note": "A procedure symbol is valid only as the head of the argument of scscp1.procedure_call."
   }
  ]
 }

@@ -33,13 +33,17 @@ structure.
   in `docs/private-cds.md`.
 - `quant1`, `setname1` (official) and `prog1` (experimental) pinned.
 - `sign` ↔ `giac_math1.sign`.
-- `test/fixtures/openmath-to-giac.json`: 52 cases of OpenMath (OpenMath 2.0 JSON
+- `test/fixtures/openmath-to-giac.json`: 59 cases of OpenMath (OpenMath 2.0 JSON
   encoding) read into GIAC, for every reader and producer to test against.
   Each accepted case gives a GIAC source and the value GIAC must give; each
   refused case gives the JSON path of the refused node, its symbol or kind,
   and a substring of the reason. The format is in `docs/fixtures.md`. The
   tests check the corpus against the table (`just test`) and its values in
   GIAC (`just test-giac`).
+- The corpus's format 2 rules, with 7 cases: only official CDs unless the
+  caller enables others (`options.enable`); each symbol at its CD's base,
+  inherited from the enclosing object; procedure symbols only inside
+  `scscp1.procedure_call`. The tests check that the cases follow them.
 - The corpus's rule for bound variables named as GIAC constants: a reader
   renames them to a fresh name (`i` bound in a sum becomes `i_1`), and still
   refuses free ones; 4 cases.

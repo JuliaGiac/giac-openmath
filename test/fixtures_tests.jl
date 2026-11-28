@@ -36,6 +36,31 @@
     refused_om = Dict(r["om"] => r["reason"] for r in table["refused"] if haskey(r, "om"))
     # walk a JSON path into an object
     at(o, path) = isempty(path) ? o : at(o[path[1] isa Integer ? path[1] + 1 : path[1]], path[2:end])
+
+    # format 2: statuses, bases and requests
+    const STANDARD_CDBASE = "http://www.openmath.org/cd"
+    cd_of(s) = first(split(s, '.'))
+    status(cd) = haskey(table["cd"], cd) ? table["cd"][cd]["status"] : nothing
+    base(cd) = haskey(table["cd"], cd) ? get(table["cd"][cd], "cdbase", STANDARD_CDBASE) : STANDARD_CDBASE
+    enabled(c) = Set{String}(get(get(c, "options", Dict()), "enable", String[]))
+    procedure_cds = Set{String}(table["envelope"]["procedure_cds"])
+    # every OMS with its path and its base: its own cdbase, or the nearest
+    # enclosing object's, or OpenMath's
+    function oms_bases(o, path = Any[], b = STANDARD_CDBASE)
+        out = Tuple{String, Vector{Any}, String}[]
+        if o isa AbstractDict
+            b = get(o, "cdbase", b)
+            get(o, "kind", nothing) == "OMS" && push!(out, (o["cd"] * "." * o["name"], path, b))
+            for (k, v) in o
+                append!(out, oms_bases(v, [path; k], b))
+            end
+        elseif o isa AbstractVector
+            for (i, v) in enumerate(o)
+                append!(out, oms_bases(v, [path; i - 1], b))
+            end
+        end
+        return out
+    end
 end
 
 @testitem "the corpus has the expected format" setup = [Fixtures] begin
@@ -64,6 +89,53 @@ end
     end
 end
 
+@testitem "the options are those of the reading rules" setup = [Fixtures] begin
+    for c in cases
+        o = get(c, "options", Dict())
+        @test issubset(keys(o), ["exact", "enable"])
+        # only CDs that are not official need enabling
+        for cd in enabled(c)
+            @test status(cd) in ("experimental", "private")
+        end
+    end
+end
+
+@testitem "an accepted case uses official CDs, or enabled ones, at their base" setup = [Fixtures] begin
+    for c in cases
+        haskey(c, "value") || continue
+        for (s, _, b) in oms_bases(c["om"])
+            cd = cd_of(s)
+            @test status(cd) == "official" || cd in enabled(c)
+            @test b == base(cd)
+            @test !(cd in procedure_cds)       # requests are not evaluated as mathematics
+        end
+    end
+end
+
+@testitem "the format 2 refusals have their cases" setup = [Fixtures] begin
+    # a symbol of a CD that is not enabled, at another base, or a request out of place
+    why(c) = begin
+        r = c["refused"]
+        haskey(r, "symbol") || return nothing
+        node = at(c["om"], r["path"])
+        b = only(b for (s, p, b) in oms_bases(c["om"]) if p == r["path"])
+        cd = cd_of(r["symbol"])
+        status(cd) in ("experimental", "private") && !(cd in enabled(c)) && return :status
+        b != base(cd) && return :base
+        cd in procedure_cds && return :placement
+        return nothing
+    end
+    kinds = Set(why(c) for c in cases if haskey(c, "refused"))
+    @test issubset([:status, :base, :placement], kinds)
+    for c in cases
+        haskey(c, "refused") || continue
+        w = why(c)
+        w === :status && @test occursin(status(cd_of(c["refused"]["symbol"])), c["refused"]["reason_contains"])
+        w === :base && @test c["refused"]["reason_contains"] == "base"
+        w === :placement && @test c["refused"]["reason_contains"] == "procedure_call"
+    end
+end
+
 @testitem "every refusal points at a node, and agrees with the table" setup = [Fixtures] begin
     for c in cases
         haskey(c, "refused") || continue
@@ -71,8 +143,14 @@ end
         node = at(c["om"], r["path"])                  # the path leads somewhere
         @test node isa AbstractDict
         if haskey(r, "symbol")
-            # a refused symbol is refused by the table, or not read by it at all
-            @test haskey(refused_om, r["symbol"]) || !(r["symbol"] in om_heads)
+            # a refused symbol is refused by the table, or not read by it at all,
+            # or refused by the format 2 rules (its CD not enabled, another base,
+            # a request out of place)
+            cd = cd_of(r["symbol"])
+            b = only(b for (s, p, b) in oms_bases(c["om"]) if p == r["path"])
+            format2 = (status(cd) in ("experimental", "private") && !(cd in enabled(c))) ||
+                      b != base(cd) || cd in procedure_cds
+            @test haskey(refused_om, r["symbol"]) || !(r["symbol"] in om_heads) || format2
             haskey(refused_om, r["symbol"]) && haskey(r, "reason_contains") &&
                 @test occursin(r["reason_contains"], refused_om[r["symbol"]])
         end
