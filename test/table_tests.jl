@@ -62,6 +62,14 @@ end
         # the status a CD declares, not the directory it is in (scscp1 is in
         # Official and declares itself experimental)
         @test cd_field(cd, "CDStatus") == entry["status"]
+        # GIAC's options of a call change its meaning: a reader must not drop them
+        if cd == "giac_procedures1"
+            text = cd_text(cd)
+            for name in ("premises", "complex_mode")
+                m = match(Regex("<Name>$name</Name>\\s*<Role>([^<]+)</Role>"), text)
+                @test m !== nothing && m.captures[1] == "semantic-attribution"
+            end
+        end
         if entry["status"] == "private"
             @test get(entry, "local", false)
             @test entry["cdbase"] != "http://www.openmath.org/cd"
@@ -74,7 +82,8 @@ end
 end
 
 @testitem "procedures stay apart from mathematics" setup = [Table] begin
-    proc_cds = Set(cd for (cd, e) in table["cd"] if e["status"] == "private" && startswith(cd, "giac_procedures"))
+    proc_cds = Set(table["envelope"]["procedure_cds"])
+    @test issubset(proc_cds, keys(table["cd"]))
     @test !isempty(procedures) && !isempty(proc_cds)
     for p in procedures
         @test issubset(keys(p), ["giac", "om", "note"])
@@ -89,7 +98,7 @@ end
         @test all(s -> !(split(s, '.')[1] in proc_cds), om_symbols(e["om"]))
     end
     env = table["envelope"]
-    @test Set(keys(env)) == Set(["call", "completed", "terminated", "message", "error"])
+    @test Set(keys(env)) == Set(["procedure_cds", "call", "completed", "terminated", "message", "error"])
     for o in options
         @test issubset(keys(o), ["om", "giac", "note"])
     end
@@ -99,7 +108,7 @@ end
     used = vcat([om_symbols(m["om"]) for m in maps]..., [om_symbols(l["om"]) for l in leaves]...,
                 [om_symbols(r["om"]) for r in refused if haskey(r, "om")]...,
                 [om_symbols(p["om"]) for p in procedures]..., [o["om"] for o in options]...,
-                collect(values(table["envelope"])))
+                [v for (k, v) in table["envelope"] if k != "procedure_cds"])
     @test !isempty(used)
     names = Dict(cd => cd_names(cd) for cd in keys(table["cd"]))
     for s in unique(used)

@@ -94,6 +94,25 @@ path = "cd/Official/set1.ocd"
 status = "official"
 sha256 = "6d4995d2e7f1f24e062f52f600f33cceabe24e3055927e668dbea6a5dd0c5ea2"
 
+# quant1 and setname1: used by giac_math1's formal properties, and by premises
+# (set1.in(x, setname1.R) declares x real).
+[cd.quant1]
+path = "cd/Official/quant1.ocd"
+status = "official"
+sha256 = "58e065460b461514e83fc432372e1b598a5a589ed8c5992d20913a20c49db928"
+
+[cd.setname1]
+path = "cd/Official/setname1.ocd"
+status = "official"
+sha256 = "746cc460c6aec8601d72dbfe16b99451dcd24f165b2d9ec4f77b4f391bd54abd"
+
+# prog1 (experimental): its assignment is the request that sets a session's
+# variable, used only inside the envelope's call and when enabled.
+[cd.prog1]
+path = "cd/experimental/prog1.ocd"
+status = "experimental"
+sha256 = "d436374cd5ffa9e64484e6d1ab1e6996321f1814843fa36278773b65933c3a7e"
+
 # scscp1 is in Official but declares itself experimental: the status is the
 # declared one. Its procedure_call is the envelope of giac_procedures1's requests.
 [cd.scscp1]
@@ -109,14 +128,14 @@ path = "docs/cd/giac_math1.ocd"
 local = true
 status = "private"
 cdbase = "https://juliagiac.github.io/giac-openmath/cd"
-sha256 = "b5f85965ee760da8219ed84629cfe63a3351139d5c6d6944ce3ac8e0697c6687"
+sha256 = "13703365bddf28fbdc748102cf0667c6cfa7909b617d67c98223c3a07dd0bff6"
 
 [cd.giac_procedures1]
 path = "docs/cd/giac_procedures1.ocd"
 local = true
 status = "private"
 cdbase = "https://juliagiac.github.io/giac-openmath/cd"
-sha256 = "51dc9fa187a13991607b6374e951415788b396e1b508442108179aa674de99dc"
+sha256 = "2b3ee00ea74d16ba52b339f2769d19cf53c11a15f2acc44858395cbc5fb95f6e"
 
 # ── Leaves: values that are not calls ─────────────────────────────────────
 # Integers are OMI, identifiers OMV, GIAC fractions (FRAC) nums1.rational(p, q)
@@ -515,6 +534,8 @@ note = "A private CD: readers use it only when their caller enables private CDs.
 # docs/private-cds.md. A request writes GIAC input like a map does.
 
 [envelope]
+# the CDs whose symbols are requests: valid only as the head of call's argument
+procedure_cds = ["giac_procedures1", "prog1"]
 call = "scscp1.procedure_call"
 completed = "scscp1.procedure_completed"
 terminated = "scscp1.procedure_terminated"
@@ -556,23 +577,29 @@ note = "series(e, v, a, n): the expansion of e in v at a to order n, with GIAC's
 [[procedure]]
 giac = ["desolve", "#1", "#2"]
 om = ["giac_procedures1.desolve", "#1", "#2"]
+note = "The answer's constants (GIAC's c_0, c_1, ...) are new names, bound by the result."
 
-# Options of a call: attributions on the envelope's argument, and what they
-# set in GIAC for that call only.
+[[procedure]]
+giac = ["sto", "#2", "#1"]
+om = ["prog1.assignment", "#1", "#2"]
+note = "a := value: sets a session's variable. prog1 is experimental: only when enabled. A definition f(x) := body needs a lambda as value, which the table does not map yet."
+
+# Options of a call and what they set in GIAC for that call only: GIAC's
+# semantic attributions on the call's argument, scscp1's options on the call.
 [[procedure_option]]
 om = "giac_procedures1.premises"
 giac = "assume"
-note = "The premises hold during the call (as Giac.jl's assuming): GIAC's assume, then purged."
+note = "A semantic attribution on the call's argument: GIAC's assume for the call only (as Giac.jl's assuming). Relations, logic1.and, logic1.or, and set1.in(x, setname1.R) to declare x real."
 
 [[procedure_option]]
 om = "giac_procedures1.complex_mode"
 giac = "complex_mode"
-note = "logic1.true or logic1.false: GIAC's complex_mode for the call."
+note = "A semantic attribution on the call's argument: logic1.true or logic1.false, GIAC's complex_mode for the call (it sets factor's field; it does not declare variables real)."
 
 [[procedure_option]]
 om = "scscp1.option_runtime"
 giac = "timeout"
-note = "Milliseconds in scscp1; GIAC's time limit is in seconds."
+note = "On the procedure_call application itself, where scscp1 places its options. Milliseconds in scscp1; GIAC's time limit is in seconds."
 
 # ── Refused: no Content Dictionary symbol, or a false friend ───────────────
 

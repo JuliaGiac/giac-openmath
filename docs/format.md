@@ -15,9 +15,9 @@ reader. A test fails if the two differ.
 | `leaf` | GIAC values that are not calls, and their OpenMath symbols. |
 | `map` | GIAC calls and their OpenMath forms. |
 | `refused` | What is not mapped, on purpose, and why. |
-| `envelope` | The symbols of a request to GIAC and of its answer (`scscp1.procedure_call`, `procedure_completed`, `procedure_terminated`, `info_message`, `error_system_specific`). |
-| `procedure` | Requests to GIAC: a GIAC pattern and the `giac_procedures1` pattern, like a map; valid only inside the envelope's call. |
-| `procedure_option` | Options of a request (attributions on the call's argument) and the GIAC setting each sets: premises, complex mode, time limit. |
+| `envelope` | The symbols of a request to GIAC and of its answer (`scscp1.procedure_call`, `procedure_completed`, `procedure_terminated`, `info_message`, `error_system_specific`), and `procedure_cds`, the CDs whose symbols are requests (`giac_procedures1`, `prog1`). |
+| `procedure` | Requests to GIAC: a GIAC pattern and the OpenMath pattern, like a map, with a head in one of the `procedure_cds`; valid only inside the envelope's call. |
+| `procedure_option` | Options of a request and the GIAC setting each sets: premises and complex mode (semantic attributions on the call's argument), time limit (`scscp1.option_runtime`, on the `procedure_call` application). |
 
 ## Which GIAC names
 
@@ -140,6 +140,5 @@ list, rather than guess.
 
 A reader uses only `official` CDs unless its caller enables others; procedure
 symbols are valid only as the head of the argument of `scscp1.procedure_call`
-and never in a result. The rules, agreed with the MathInterchange study, are
-in [private-cds.md](private-cds.md).
+and never in a result. The rules are in [private-cds.md](private-cds.md).
 

@@ -6,30 +6,32 @@ they lack comes in two kinds, which are kept apart:
 | Kind | What it is | Where |
 |---|---|---|
 | Mathematics | functions, defined by formal properties (`sign`) | `giac_math1`, a private CD |
-| Requests to GIAC | commands whose answer depends on GIAC's version and settings (simplify, expand, factor, solve, evalf, series, desolve) | `giac_procedures1`, a private CD, inside `scscp1.procedure_call` |
+| Requests to GIAC | commands whose answer depends on GIAC's version and settings (simplify, expand, factor, solve, evalf, series, desolve), and assignment | `giac_procedures1`, a private CD, and `prog1.assignment`, inside `scscp1.procedure_call` |
 
-Both are files of this repository (`docs/cd/`), with their own base,
-`https://juliagiac.github.io/giac-openmath/cd`. The table pins each by SHA-256,
-like the official CDs, and gives the status each CD declares in its file.
-`scscp1` is in OpenMath's Official directory but declares itself
+The private CDs are files of this repository (`docs/cd/`), with their own
+base, `https://juliagiac.github.io/giac-openmath/cd`. The table pins each by
+SHA-256, like the official CDs, and gives the status each CD declares in its
+file. `scscp1` is in OpenMath's Official directory but declares itself
 `experimental`. What counts is the declared status, not the directory or the
 base.
 
-The rules below were agreed with the MathInterchange study. They follow its
-ADR 0001: local agreements on existing formats, explicit scope, and refusal
-outside it.
+These rules were reviewed, and approved by the maintainer. They are local
+agreements on existing formats: their scope is explicit, and a reader refuses
+what falls outside it.
 
 ## Readers
 
 - **By default, a reader uses only `official` CDs.** Experimental and private
   CDs are used only when the caller enables them. They are pinned by digest,
-  with their exact base and name: two dictionaries with the same name and
-  revision at another base, or with one changed byte, gave opposite answers
-  in MathInterchange's experiments.
+  with their exact base and name: a dictionary with the same name and
+  revision at another base, or with one changed byte, is another dictionary,
+  and may mean something else.
 - **A reader whose output feeds claims or evidence** (MathInterfaceGiac.jl,
-  proof checkers) keeps to the official CDs.
+  proof checkers) uses only the official CDs by default. It may accept
+  `giac_math1` through an explicit option, pinned by its digest. It never
+  accepts procedure symbols: a request is not a mathematical statement.
 - **Applications** that drive GIAC (CAScad, Progressive Web Office) may enable
-  `giac_math1`, `giac_procedures1` and `scscp1`.
+  `giac_math1`, `giac_procedures1`, `prog1` and `scscp1`.
 
 ## Requests
 
@@ -37,41 +39,60 @@ A request to GIAC is written as SCSCP writes a procedure call, even without
 an SCSCP network:
 
 ```
-scscp1.procedure_call(
-  OMATTR(giac_procedures1.premises    → relation1.gt(x, 0),
-         giac_procedures1.complex_mode → logic1.false,
-         giac_procedures1.factor(x^4 - 1)))
+OMATTR(scscp1.call_id        → "42",
+       scscp1.option_runtime → 5000,
+  scscp1.procedure_call(
+    OMATTR(giac_procedures1.premises     → relation1.gt(x, 0),
+           giac_procedures1.complex_mode → logic1.false,
+      giac_procedures1.factor(x^4 - 1))))
 ```
 
 - **Where procedure symbols may appear.** Only as the head of the argument of
-  `scscp1.procedure_call`. A reader refuses them anywhere else, and always in
-  a result: an unevaluated command is not an answer.
+  `scscp1.procedure_call`. The CDs whose symbols are requests are listed in
+  the table (`envelope.procedure_cds`: `giac_procedures1`, `prog1`). A reader
+  refuses them anywhere else, and always in a result: an unevaluated command
+  is not an answer.
 - **The arguments are mathematics**, in official symbols (or `giac_math1` if
   enabled).
-- **Options are attributions on the argument** (`[[procedure_option]]`):
-  - premises (GIAC's `assume`, for the call only);
-  - complex mode;
-  - `scscp1.option_runtime` (GIAC's time limit).
+- **Options** (`[[procedure_option]]`) are placed as SCSCP places them:
+  - `scscp1`'s options (`option_runtime`, GIAC's time limit; `call_id`,
+    `option_return_object`) are attributions on the `procedure_call`
+    application;
+  - GIAC's settings are semantic attributions on the call's argument:
+    premises (GIAC's `assume`, for the call only; relations, `logic1.and`,
+    `logic1.or`, and `set1.in(x, setname1.R)` to declare `x` real) and
+    complex mode (`logic1.true` or `logic1.false`; it sets the field `factor`
+    works in).
 
-  They are part of the call, because they change GIAC's answers.
+  GIAC's settings are declared with the role `semantic-attribution`: they
+  change GIAC's answers, so a reader must not drop them.
 - **The answer is `scscp1.procedure_completed`**, holding the result in
   official symbols, with GIAC's messages as `scscp1.info_message`. A failure
   is `scscp1.procedure_terminated` with `scscp1.error_system_specific`.
-- **The result carries the claim, with its relation to the request explicit:**
-  - equal under the premises (simplify, expand, factor);
-  - the solutions of (solve, desolve);
-  - an approximation of (evalf), never an equality;
-  - an expansion with its order term (series).
-- **Assignment and definitions** change a session's state, so they are
-  requests too. Applications compose them themselves. For instance,
-  `a := <value>` uses the GIAC source of the value, and a function uses a
-  lambda.
+- **The result's relation to the request is the one the CD gives, and it
+  holds where both sides are defined, under the premises:**
+  - simplify, expand, factor: equal where both are defined; GIAC does not
+    guarantee it (a simplification may cancel a factor that vanishes);
+  - solve: each listed value can be checked against the equations; the list
+    is not implied to be complete;
+  - desolve: solutions, whose constants (GIAC's `c_0`, `c_1`…) are new names
+    bound by the result;
+  - series: agrees with the expression to order `n`, with a remainder
+    `O((v-a)^(n+1))`;
+  - evalf: an approximation, never an equality; it can be checked only with
+    an enclosure.
+- **Assignment** changes a session's state, so it is a request too:
+  `a := value` is `scscp1.procedure_call(prog1.assignment(a, value))`
+  (GIAC's `sto(value, a)`). `prog1` is experimental: a reader uses it only
+  when enabled. A definition `f(x) := body` needs a lambda as the value,
+  which the table does not map yet.
 
 ## The status of each CD
 
 | CD | Status | Use |
 |---|---|---|
-| arith1, transc1, relation1, logic1, nums1, rounding1, minmax1, complex1, integer1, calculus1, limit1, set1, interval1, fns1 | official | default |
+| arith1, transc1, relation1, logic1, nums1, rounding1, minmax1, complex1, integer1, calculus1, limit1, set1, interval1, fns1, quant1, setname1 | official | default |
 | scscp1 | experimental (declared) | the envelope of requests, when enabled |
+| prog1 | experimental | assignment, inside `scscp1.procedure_call`, when enabled |
 | giac_math1 | private | when enabled |
 | giac_procedures1 | private | requests, inside `scscp1.procedure_call`, when enabled |

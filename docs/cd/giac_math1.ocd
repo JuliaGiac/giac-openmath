@@ -44,7 +44,7 @@ of z (as GIAC's sign: sign(1+i) is (1+i)/sqrt(2)).
   </OMA>
 </OMOBJ>
 </FMP>
-<CMP>for all z, z != 0 implies sign(z) = z / |z|</CMP>
+<CMP>for all complex z, z != 0 implies sign(z) = z / |z|</CMP>
 <FMP>
 <OMOBJ xmlns="http://www.openmath.org/OpenMath" version="2.0" cdbase="http://www.openmath.org/cd">
   <OMBIND>
@@ -55,9 +55,17 @@ of z (as GIAC's sign: sign(1+i) is (1+i)/sqrt(2)).
     <OMA>
       <OMS cd="logic1" name="implies"/>
       <OMA>
-        <OMS cd="relation1" name="neq"/>
-        <OMV name="z"/>
-        <OMI>0</OMI>
+        <OMS cd="logic1" name="and"/>
+        <OMA>
+          <OMS cd="set1" name="in"/>
+          <OMV name="z"/>
+          <OMS cd="setname1" name="C"/>
+        </OMA>
+        <OMA>
+          <OMS cd="relation1" name="neq"/>
+          <OMV name="z"/>
+          <OMI>0</OMI>
+        </OMA>
       </OMA>
       <OMA>
         <OMS cd="relation1" name="eq"/>

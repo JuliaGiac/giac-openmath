@@ -19,12 +19,15 @@ structure.
   `https://juliagiac.github.io/giac-openmath/cd`, pinned by SHA-256:
   `giac_math1` (`sign`, defined by formal properties) and `giac_procedures1`
   (requests to GIAC: simplify, expand, factor, solve, evalf, series,
-  desolve; options premises and complex_mode).
+  desolve, each with the relation its result holds where defined; options
+  premises and complex_mode, as semantic attributions).
 - **Requests to GIAC** (`[[procedure]]`, `[envelope]`,
   `[[procedure_option]]`): written in an `scscp1.procedure_call`, answered by
-  `procedure_completed` or `procedure_terminated`; procedure symbols are
-  refused anywhere else and in results. The rules, agreed with the
-  MathInterchange study, are in `docs/private-cds.md`.
+  `procedure_completed` or `procedure_terminated`; procedure symbols (the CDs
+  in `envelope.procedure_cds`) are refused anywhere else and in results.
+  Assignment is a request, `prog1.assignment` (experimental). The rules are
+  in `docs/private-cds.md`.
+- `quant1`, `setname1` (official) and `prog1` (experimental) pinned.
 - `sign` ↔ `giac_math1.sign`.
 - `test/fixtures/openmath-to-giac.json`: 52 cases of OpenMath (OpenMath 2.0 JSON
   encoding) read into GIAC, for every reader and producer to test against.

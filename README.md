@@ -50,9 +50,10 @@ differ (GIAC evaluates `trunc(x)` to `floor(x)`, `acot(x)` to `atan(1/x)`…).
 What the official CDs lack comes in two kinds, kept apart (format 2):
 functions defined by formal properties, in the private CD `giac_math1`
 (`sign`), and requests to GIAC's commands (simplify, expand, factor, solve,
-evalf, series, desolve), in the private CD `giac_procedures1`, valid only
-inside an SCSCP-style `scscp1.procedure_call`. Readers use them only when
-their caller enables them; claims and evidence stay in official symbols. See
+evalf, series, desolve) and assignment (`prog1.assignment`), in the private
+CD `giac_procedures1`, valid only inside an SCSCP-style
+`scscp1.procedure_call`. Readers use them only when their caller enables
+them; claims and evidence stay in official symbols. See
 [docs/private-cds.md](docs/private-cds.md).
 
 ## A shared corpus
