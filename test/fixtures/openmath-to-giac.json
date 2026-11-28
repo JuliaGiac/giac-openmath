@@ -1,6 +1,6 @@
 {
  "format": 1,
- "table_commit": "d7311e73ec014589259d03febc9d152b4b2b5dbd",
+ "table_commit": "8560ab22a9591539a9ba1021547f37bff6adca35",
  "description": "OpenMath JSON (OpenMath 2.0 JSON encoding) read into GIAC through giac-openmath: per case, the GIAC source a reader may write (informative: parenthesization may differ), and the value GIAC must give, or the refusal (the JSON path of the refused node from the root of om, 0-based array indices; the symbol or kind; a substring of the reason). See docs/fixtures.md.",
  "cases": [
   {

@@ -10,6 +10,8 @@ structure.
 ## [Unreleased]
 
 ### Changed
+- The corpus is written for the format 2 table (`table_commit` at the merge
+  of the private CDs); its cases are unchanged.
 - **Format 2** (format 1 readers keep working on the official part, but should
   move): each CD gives the `status` its file declares (`scscp1`, in
   OpenMath's Official directory, declares `experimental`).
