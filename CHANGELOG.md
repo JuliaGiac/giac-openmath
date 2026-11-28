@@ -10,13 +10,16 @@ structure.
 ## [Unreleased]
 
 ### Added
-- `test/fixtures/openmath-to-giac.json`: 48 cases of OpenMath (OpenMath 2.0 JSON
+- `test/fixtures/openmath-to-giac.json`: 52 cases of OpenMath (OpenMath 2.0 JSON
   encoding) read into GIAC, for every reader and producer to test against.
   Each accepted case gives a GIAC source and the value GIAC must give; each
   refused case gives the JSON path of the refused node, its symbol or kind,
   and a substring of the reason. The format is in `docs/fixtures.md`. The
   tests check the corpus against the table (`just test`) and its values in
   GIAC (`just test-giac`).
+- The corpus's rule for bound variables named as GIAC constants: a reader
+  renames them to a fresh name (`i` bound in a sum becomes `i_1`), and still
+  refuses free ones; 4 cases.
 - `giac-openmath.toml`, format 1: GIAC's expression-tree nodes (GIAC 2.0.0)
   and the OpenMath symbols they mean, in both directions, for arith1,
   transc1, relation1, logic1, nums1, rounding1, minmax1, complex1, integer1,
