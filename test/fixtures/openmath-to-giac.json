@@ -1070,6 +1070,266 @@
    }
   },
   {
+   "name": "a bound variable named as a GIAC constant is renamed",
+   "om": {
+    "kind": "OMA",
+    "applicant": {
+     "kind": "OMS",
+     "cd": "arith1",
+     "name": "sum"
+    },
+    "arguments": [
+     {
+      "kind": "OMA",
+      "applicant": {
+       "kind": "OMS",
+       "cd": "interval1",
+       "name": "integer_interval"
+      },
+      "arguments": [
+       {
+        "kind": "OMI",
+        "integer": 1
+       },
+       {
+        "kind": "OMV",
+        "name": "n"
+       }
+      ]
+     },
+     {
+      "kind": "OMBIND",
+      "binder": {
+       "kind": "OMS",
+       "cd": "fns1",
+       "name": "lambda"
+      },
+      "variables": [
+       {
+        "kind": "OMV",
+        "name": "i"
+       }
+      ],
+      "object": {
+       "kind": "OMA",
+       "applicant": {
+        "kind": "OMS",
+        "cd": "arith1",
+        "name": "power"
+       },
+       "arguments": [
+        {
+         "kind": "OMV",
+         "name": "i"
+        },
+        {
+         "kind": "OMI",
+         "integer": 2
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "giac_source": "sum(i_1^2, i_1, 1, n)",
+   "value": "n*(n+1)*(2*n+1)/6",
+   "note": "i is GIAC's imaginary unit; bound by fns1.lambda, it is renamed (alpha-conversion) to a fresh name."
+  },
+  {
+   "name": "a bound e is renamed too",
+   "om": {
+    "kind": "OMA",
+    "applicant": {
+     "kind": "OMS",
+     "cd": "calculus1",
+     "name": "defint"
+    },
+    "arguments": [
+     {
+      "kind": "OMA",
+      "applicant": {
+       "kind": "OMS",
+       "cd": "interval1",
+       "name": "interval"
+      },
+      "arguments": [
+       {
+        "kind": "OMI",
+        "integer": 0
+       },
+       {
+        "kind": "OMI",
+        "integer": 1
+       }
+      ]
+     },
+     {
+      "kind": "OMBIND",
+      "binder": {
+       "kind": "OMS",
+       "cd": "fns1",
+       "name": "lambda"
+      },
+      "variables": [
+       {
+        "kind": "OMV",
+        "name": "e"
+       }
+      ],
+      "object": {
+       "kind": "OMA",
+       "applicant": {
+        "kind": "OMS",
+        "cd": "arith1",
+        "name": "power"
+       },
+       "arguments": [
+        {
+         "kind": "OMV",
+         "name": "e"
+        },
+        {
+         "kind": "OMI",
+         "integer": 2
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "giac_source": "integrate(e_1^2, e_1, 0, 1)",
+   "value": "1/3"
+  },
+  {
+   "name": "the fresh name avoids the names of the object",
+   "om": {
+    "kind": "OMA",
+    "applicant": {
+     "kind": "OMS",
+     "cd": "arith1",
+     "name": "sum"
+    },
+    "arguments": [
+     {
+      "kind": "OMA",
+      "applicant": {
+       "kind": "OMS",
+       "cd": "interval1",
+       "name": "integer_interval"
+      },
+      "arguments": [
+       {
+        "kind": "OMI",
+        "integer": 1
+       },
+       {
+        "kind": "OMV",
+        "name": "n"
+       }
+      ]
+     },
+     {
+      "kind": "OMBIND",
+      "binder": {
+       "kind": "OMS",
+       "cd": "fns1",
+       "name": "lambda"
+      },
+      "variables": [
+       {
+        "kind": "OMV",
+        "name": "i"
+       }
+      ],
+      "object": {
+       "kind": "OMA",
+       "applicant": {
+        "kind": "OMS",
+        "cd": "arith1",
+        "name": "plus"
+       },
+       "arguments": [
+        {
+         "kind": "OMV",
+         "name": "i"
+        },
+        {
+         "kind": "OMV",
+         "name": "i_1"
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "giac_source": "sum((i_2) + (i_1), i_2, 1, n)",
+   "value": "n*(n+1)/2+n*i_1",
+   "note": "i_1 is a free variable of the object: the bound i becomes i_2."
+  },
+  {
+   "name": "a free constant name is refused, even next to a binding",
+   "om": {
+    "kind": "OMA",
+    "applicant": {
+     "kind": "OMA",
+     "applicant": {
+      "kind": "OMS",
+      "cd": "calculus1",
+      "name": "diff"
+     },
+     "arguments": [
+      {
+       "kind": "OMBIND",
+       "binder": {
+        "kind": "OMS",
+        "cd": "fns1",
+        "name": "lambda"
+       },
+       "variables": [
+        {
+         "kind": "OMV",
+         "name": "i"
+        }
+       ],
+       "object": {
+        "kind": "OMA",
+        "applicant": {
+         "kind": "OMS",
+         "cd": "arith1",
+         "name": "power"
+        },
+        "arguments": [
+         {
+          "kind": "OMV",
+          "name": "i"
+         },
+         {
+          "kind": "OMI",
+          "integer": 2
+         }
+        ]
+       }
+      }
+     ]
+    },
+    "arguments": [
+     {
+      "kind": "OMV",
+      "name": "i"
+     }
+    ]
+   },
+   "refused": {
+    "path": [
+     "arguments",
+     0
+    ],
+    "kind": "OMV",
+    "reason_contains": "constant"
+   },
+   "note": "The derivative of i -> i^2 at i: the applied i is free, so it cannot be renamed."
+  },
+  {
    "name": "a variable GIAC would read as a unit",
    "om": {
     "kind": "OMV",

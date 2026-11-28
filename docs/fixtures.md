@@ -44,7 +44,8 @@ These are the input contract of `giac-wasm/openmath` (JuliaGiac/giac#22):
 
 - **Kinds.** Only `OMA`, `OMBIND`, `OMS`, `OMV`, `OMI` and `OMF` are read. The other kinds are refused.
 - **Integers.** An integer beyond ±2^53 must be given as `decimal`, a string. A JSON-number `integer` that is not a safe integer is refused, since it may already have been rounded.
-- **Variables.** A variable is a GIAC identifier, `[A-Za-z][A-Za-z0-9_]*`. A name GIAC reads as a constant (`e`, `i`, `pi`, …) or as a command is refused.
+- **Variables.** A variable is a GIAC identifier, `[A-Za-z][A-Za-z0-9_]*`. A free variable whose name GIAC reads as a constant (`e`, `i`, `pi`, …) or as a command is refused.
+- **Bound variables named as constants.** A variable bound by an `OMBIND` (`fns1.lambda`: sums, products, integrals, limits) whose name GIAC reads as a constant is renamed, since renaming a bound variable keeps the meaning (alpha-conversion). The fresh name is the name followed by `_1`, `_2`…: the first that no variable of the object uses. So `sum` over `i` of `i^2` is written `sum(i_1^2, i_1, 1, n)`. A result that still holds the binding shows the fresh name. A bound variable named as a GIAC command is still refused.
 - **Bound variables.** In the table's `bind`/`apply` patterns, the applied variable must be the bound one.
 - **Refusals.** A refused symbol gives the table's `reason`.
 
