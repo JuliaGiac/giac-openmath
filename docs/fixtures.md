@@ -30,7 +30,7 @@ such as `mathjson-openmath`, whose output they read.
 | `table_commit` | The commit of this repository's table the cases are written for. |
 | `name` | Unique. |
 | `om` | The input, in the OpenMath 2.0 JSON encoding (the root object, without an `OMOBJ` wrapper). |
-| `options` | Optional reader options, such as `{"exact": true}`, which refuses floats. |
+| `options` | Optional reader options: `{"exact": true}` refuses floats; `{"enable": ["giac_math1", …]}` enables CDs that are not official. |
 | `giac_source` | For an accepted case: GIAC input a reader may write. Informative: readers may parenthesize differently. |
 | `value` | For an accepted case: GIAC input of the value. The reader's GIAC result must equal it: their difference simplifies to 0, or they print the same (relations, booleans). |
 | `refused` | For a refused case: `path` is the JSON path of the refused node from the root of `om`, with array indices from 0 (`[]` is the root); `symbol` (`cd.name`) or `kind` (`OMV`, `OMI`, `OMA`…) names it; `reason_contains`, when given, is a substring of the reason. |
@@ -47,6 +47,10 @@ These are the input contract of `giac-wasm/openmath` (JuliaGiac/giac#22):
 - **Variables.** A variable is a GIAC identifier, `[A-Za-z][A-Za-z0-9_]*`. A free variable whose name GIAC reads as a constant (`e`, `i`, `pi`, …) or as a command is refused.
 - **Bound variables named as constants.** A variable bound by an `OMBIND` (`fns1.lambda`: sums, products, integrals, limits) whose name GIAC reads as a constant is renamed, since renaming a bound variable keeps the meaning (alpha-conversion). The fresh name is the name followed by `_1`, `_2`…: the first that no variable of the object uses. So `sum` over `i` of `i^2` is written `sum(i_1^2, i_1, 1, n)`. A result that still holds the binding shows the fresh name. A bound variable named as a GIAC command is still refused.
 - **Bound variables.** In the table's `bind`/`apply` patterns, the applied variable must be the bound one.
+- **Content Dictionaries (format 2).** By default only the table's `official` CDs are read. A symbol of an `experimental` or `private` CD is refused, unless the caller enables its CD (`"enable"`), with a reason that names the status.
+- **Bases.** A symbol's base is its own `cdbase`, or else the nearest enclosing object's, or else `http://www.openmath.org/cd`. It must be the table's base for its CD (`cd.<name>.cdbase`, or OpenMath's): the same name at another base is another dictionary. Otherwise the symbol is refused, with a reason that contains "base".
+- **Requests.** A symbol of a CD in `envelope.procedure_cds` is valid only as the head of the argument of `scscp1.procedure_call`; anywhere else it is refused, with a reason that contains "procedure_call". Evaluating requests is not part of this corpus yet.
+- **Order.** A reader refuses the first symbol, in document order (an application's head before its arguments), that breaks one of these rules.
 - **Refusals.** A refused symbol gives the table's `reason`.
 
 ## Tests
