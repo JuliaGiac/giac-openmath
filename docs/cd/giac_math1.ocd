@@ -1,0 +1,91 @@
+<CD xmlns="http://www.openmath.org/OpenMathCD">
+
+<CDComment>
+A private Content Dictionary of JuliaGiac (https://github.com/JuliaGiac/giac-openmath),
+distributed under the MIT license (see LICENSE in that repository). It is not
+an OpenMath Society Content Dictionary, and not derived from one.
+</CDComment>
+
+<CDName>giac_math1</CDName>
+<CDBase>https://juliagiac.github.io/giac-openmath/cd</CDBase>
+<CDURL>https://juliagiac.github.io/giac-openmath/cd/giac_math1.ocd</CDURL>
+<CDReviewDate>2027-11-28</CDReviewDate>
+<CDStatus>private</CDStatus>
+<CDDate>2026-11-28</CDDate>
+<CDVersion>0</CDVersion>
+<CDRevision>1</CDRevision>
+
+<Description>
+Mathematical functions that GIAC computes and that no official or experimental
+OpenMath Content Dictionary defines (at OpenMath/CDs commit cbf6075). Unlike
+giac_procedures1, these symbols denote functions: each is defined by formal
+properties, independent of GIAC's version, and could be proposed to the
+OpenMath Society.
+</Description>
+
+<CDDefinition>
+<Name>sign</Name>
+<Role>application</Role>
+<Description>
+The sign of a number z: 0 at 0, and z/|z| otherwise. On the reals it is -1,
+0 or 1; on the complex numbers, the point of the unit circle in the direction
+of z (as GIAC's sign: sign(1+i) is (1+i)/sqrt(2)).
+</Description>
+<CMP>sign(0) = 0</CMP>
+<FMP>
+<OMOBJ xmlns="http://www.openmath.org/OpenMath" version="2.0" cdbase="http://www.openmath.org/cd">
+  <OMA>
+    <OMS cd="relation1" name="eq"/>
+    <OMA>
+      <OMS cdbase="https://juliagiac.github.io/giac-openmath/cd" cd="giac_math1" name="sign"/>
+      <OMI>0</OMI>
+    </OMA>
+    <OMI>0</OMI>
+  </OMA>
+</OMOBJ>
+</FMP>
+<CMP>for all complex z, z != 0 implies sign(z) = z / |z|</CMP>
+<FMP>
+<OMOBJ xmlns="http://www.openmath.org/OpenMath" version="2.0" cdbase="http://www.openmath.org/cd">
+  <OMBIND>
+    <OMS cd="quant1" name="forall"/>
+    <OMBVAR>
+      <OMV name="z"/>
+    </OMBVAR>
+    <OMA>
+      <OMS cd="logic1" name="implies"/>
+      <OMA>
+        <OMS cd="logic1" name="and"/>
+        <OMA>
+          <OMS cd="set1" name="in"/>
+          <OMV name="z"/>
+          <OMS cd="setname1" name="C"/>
+        </OMA>
+        <OMA>
+          <OMS cd="relation1" name="neq"/>
+          <OMV name="z"/>
+          <OMI>0</OMI>
+        </OMA>
+      </OMA>
+      <OMA>
+        <OMS cd="relation1" name="eq"/>
+        <OMA>
+          <OMS cdbase="https://juliagiac.github.io/giac-openmath/cd" cd="giac_math1" name="sign"/>
+          <OMV name="z"/>
+        </OMA>
+        <OMA>
+          <OMS cd="arith1" name="divide"/>
+          <OMV name="z"/>
+          <OMA>
+            <OMS cd="arith1" name="abs"/>
+            <OMV name="z"/>
+          </OMA>
+        </OMA>
+      </OMA>
+    </OMA>
+  </OMBIND>
+</OMOBJ>
+</FMP>
+</CDDefinition>
+
+</CD>

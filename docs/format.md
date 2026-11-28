@@ -8,13 +8,16 @@ reader. A test fails if the two differ.
 
 | Key | Meaning |
 |---|---|
-| `format` | Version of this format: 1. |
+| `format` | Version of this format: 2 (format 1 had no statuses, private CDs or procedures). |
 | `giac_version` | The GIAC the tests in `test/giac` ran against. Node names are GIAC's at that version. |
 | `cd_source` | Where the Content Dictionaries come from: `repository`, the pinned `commit`, and `raw`, a URL template with `{commit}` and `{path}`. |
-| `cd.<name>` | Each Content Dictionary used: its `path` in that repository and the `sha256` of the file at that commit. |
+| `cd.<name>` | Each Content Dictionary used: its `path`, the `sha256` of the file, and the `status` the file declares (`official`, `experimental` or `private`). A private CD of JuliaGiac is a file of this repository (`local = true`, path under `docs/cd/`) with its own `cdbase`. |
 | `leaf` | GIAC values that are not calls, and their OpenMath symbols. |
 | `map` | GIAC calls and their OpenMath forms. |
 | `refused` | What is not mapped, on purpose, and why. |
+| `envelope` | The symbols of a request to GIAC and of its answer (`scscp1.procedure_call`, `procedure_completed`, `procedure_terminated`, `info_message`, `error_system_specific`), and `procedure_cds`, the CDs whose symbols are requests (`giac_procedures1`, `prog1`). |
+| `procedure` | Requests to GIAC: a GIAC pattern and the OpenMath pattern, like a map, with a head in one of the `procedure_cds`; valid only inside the envelope's call. |
+| `procedure_option` | Options of a request and the GIAC setting each sets: premises and complex mode (semantic attributions on the call's argument), time limit (`scscp1.option_runtime`, on the `procedure_call` application). |
 
 ## Which GIAC names
 
@@ -132,3 +135,10 @@ example = "irem(a, b)"         # optional: GIAC input read as that node
 
 A consumer must decline these, and any node or symbol the table does not
 list, rather than guess.
+
+## Statuses, private CDs and procedures (format 2)
+
+A reader uses only `official` CDs unless its caller enables others; procedure
+symbols are valid only as the head of the argument of `scscp1.procedure_call`
+and never in a result. The rules are in [private-cds.md](private-cds.md).
+
